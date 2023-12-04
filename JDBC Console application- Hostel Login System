@@ -1,0 +1,220 @@
+package YouTube2;
+import java.sql.Connection;            //import package
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+import java.lang.Integer;
+
+public class MY_FIRST_PROJECT{
+		public static void main(String[] args) {
+			long o=0,nmb=0;
+			String grt="";
+			int lk=5;
+			Scanner sc5=new Scanner(System.in);
+			
+			while(lk>0) 
+			{
+			try {
+				    //Register the driver class - loads the driver class
+					Class.forName("com.mysql.jdbc.Driver");
+					
+					Scanner sc=new Scanner(System.in);
+					Scanner sc1=new Scanner(System.in);
+					Scanner sc2=new Scanner(System.in);
+					
+				    // Get Connection - establish connection with database // 
+					Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hostel","root","ammu_kutty3126");
+					// create statement - responsible to execute queries with database
+					Statement st=con.createStatement();
+
+		// LOG IN page
+					System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					System.out.println("\n                                             *******   WELCOME TO OUR CAMPUS HOSTEL  ******                   ");
+					System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					System.out.println("\n                                                   __   HOSTEL LOG-IN ACCESS PAGE  __        \n");
+					System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					System.out.println("                                    1 . STUDENT / LABOUR                           2 . WARDEN   ");
+					int choose = sc.nextInt();
+					System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					
+					
+		// 1. Student / Labor
+					if(choose == 1) 
+					{
+					   System.out.println("                              \n1 . REGISTRATION FORM                             2 . RECEIPT DETAILS \n"); 
+					   System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					   int select=sc.nextInt();
+					   
+		// 1. REGISTRATION FORM			
+					       if(select==1) 
+					       {
+						   System.err.println("               REGISTRARION FORM "
+						   		            + "\n            --------------------\n");
+						   System.out.println("Enter Your Full Name : ");
+						   String name=sc1.nextLine();
+						   System.out.println("Enter Your Registration Number : ");
+						   Long regno=sc.nextLong();
+						   System.out.println("Enter Your Degree : ");
+						   String deg=sc1.nextLine();
+						   System.out.println("Enter Your Mobile Number : ");
+						   Long mobno=sc.nextLong();
+						   System.out.println("Enter Your Email Id : ");
+						   String email=sc1.nextLine();
+						   System.out.println("Enter Your Amount paid : ");
+						   Long amt=sc.nextLong();
+						   System.out.println("Enter Your Gender : ");
+						   String gender=sc1.nextLine();
+						   
+						   
+						   String use="insert into hostler(Name,Reg_no,Degree,Mobile_no,Email_ID,Amount,Gender)value('"+name+"','"+regno+"','"+deg+"','"+mobno+"','"+email+"','"+amt+"','"+gender+"' )";
+						   int i=st.executeUpdate(use);
+						
+						       if(i>0) 
+						       {
+							   System.out.print("Your details are processing >>>>");
+							   for(int k=1;k<=10;k++) 
+							   {
+								   System.out.print(">");
+								   Thread.sleep(1000);
+							     }
+							     System.out.println("\n Your Registration Was Successfully Completed !!!");
+							   
+						         }
+						       else
+						       {
+							     System.err.println("Unable to process your Registration");
+						       }
+					       }
+					   
+			 //2. RECEIPT FORM   
+					       else if(select==2)
+					       {
+								   System.err.println("               RECEIPT FORM "
+								   		            + "\n           ------------------\n");
+					    	   System.out.println("Enter your Name : ");
+							   String name=sc1.nextLine();
+							  
+							    if(name!= null)
+								  {	
+							       // executeQuery method - execute queries to DB // get all records of table and execute
+							       ResultSet rs=st.executeQuery("Select * from hostler where name='"+name+"'");						 
+								   while(rs.next())
+								   {
+									   o=rs.getInt(7);
+								       nmb = rs.getLong(3);
+								       grt=rs.getString(2);
+								       System.out.println("ID :"+rs.getInt(1)+"\t"+"\n"+"NAME :"+rs.getString(2)+"\t"+"\n"+"REGISTER NO :"+rs.getString(3)+"\t"+"\n"+"MOBILE NO :"+rs.getLong(5)+"\t"+"\n"+"EMAIL_ID :"+rs.getString(6)  +"\t"+"\n"+"AMOUNT PAID :"+rs.getLong(7)+"\t"+"\n"+"GENDER :"+rs.getString(8)); 
+							           }
+								       if(name.equalsIgnoreCase(grt)) {
+									 
+									   System.out.println("\n\n Kindly Check and Confirm it ! If this your database press confirm : \n1 . CONFIRM                         2 . WRONG            ");
+										int co=sc.nextInt();
+										if(co==1)
+										{
+											System.out.println("DONE !");
+										}
+										else 
+										{
+											System.out.println("OOPS! SORRY ");
+										 }
+										}
+						         }
+					        }  
+					}   
+					
+					
+			// 2. WARDEN		
+					else if(choose == 2)
+					{
+						System.out.println("ENTER YOUR NAME : ");
+						String username=sc1.nextLine();
+						System.out.println("ENTER YOUR PASSWORD : ");
+						int pwd=sc.nextInt();
+						System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+						
+						if(pwd==3126 && username.equals("pavithra"))
+						{
+							System.out.println("                            CHOOSE YOUR PERFORMANCE \n");
+							System.out.println("1 . HOSTELLER'S DETAILS                   2 . HOSTEL DATABASE               ");
+							System.out.println("3 . REMOVE HOSTELLER                      4 . Go BACK                       ");
+							int ch=sc.nextInt();
+							System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+							
+							
+					// switch case		
+							switch(ch) 
+							{
+							case 1:
+							{
+							    System.out.println("Enter the Name :");
+								String name=sc1.nextLine();
+								ResultSet rs=st.executeQuery("Select * From hostler where name='"+name+"'");
+									rs.next();
+									String pri = rs.getString(2);
+									if(name.equalsIgnoreCase(pri)) {
+									   System.out.println("ID :"+rs.getInt(1)+"\t"+"\n"+"NAME :"+rs.getString(2)+"\t"+"\n"+" REG_NO :"+rs.getString(3)+"\t"+"\n"+" DEGREE :"+rs.getString(4)+"\t"+"\n"+"MOBILE NO :"+rs.getLong(5)+"\t"+"\n"+"EMAIL_ID :"+rs.getString(6)  +"\t"+"\n"+"AMOUNT PAID :"+rs.getLong(7)+"\t"+"\n"+" GENDER :"+rs.getString(8));
+									}
+									else {
+										System.out.println("SORRY ! RESULTS NOT FOUND ...");
+									 }
+									
+							       break;
+							    }
+							
+							
+							case 2:
+							{
+								String rs1=" select * from hostler";
+								ResultSet rs=st.executeQuery(rs1);
+								while(rs.next()) {
+									   int id = rs.getInt("id");
+									   System.out.println("ID :"+rs.getInt(1)+"\t"+"\t"+"NAME :"+rs.getString(2)+"\t"+"\t"+" REG_NO :"+rs.getString(3)+"\t"+"\t"+" DEGREE :"+rs.getString(4)+"\t"+"\t"+"MOBILE NO :"+rs.getLong(5)+"\t"+"\t"+"EMAIL_ID :"+rs.getString(6)  +"\t"+"\t"+"AMOUNT PAID :"+rs.getLong(7)+" GENDER :"+rs.getString(8));
+									}
+								System.out.println("");
+								break;
+							    }
+							
+							
+							
+							case 3:
+							{
+								System.out.println("Enter the Name :");
+								String name=sc1.nextLine();
+								String str="Delete from hostler where name='"+name+"'";
+								st.executeUpdate(str);
+								System.out.println("The Hosteller detail was deleted");
+								break;
+							    }
+							
+							case 4:
+							{
+								break;
+							}
+							}
+							
+							
+							System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+							System.out.println("If You want to exit press no : 0");
+							System.out.println("If You Want To Continue Press Any Number : ");
+							lk=sc5.nextInt();
+						}
+						
+						else {
+							System.err.println("OOPS !! OUT OF CHOICE ! .....");
+						}	
+					}
+				}
+
+		catch (Exception e) {
+					
+			
+					e.printStackTrace();
+					
+				}
+
+			}			 
+			
+		}
+
+	}
